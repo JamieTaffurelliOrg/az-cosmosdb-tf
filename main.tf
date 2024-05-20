@@ -7,11 +7,10 @@ resource "azurerm_cosmosdb_account" "cosmosdb_account" {
   default_identity_type                 = "SystemAssignedIdentity"
   create_mode                           = var.create_mode
   kind                                  = var.kind
-  enable_automatic_failover             = true
   ip_range_filter                       = var.ip_range_filter
   free_tier_enabled                     = var.free_tier_enabled
   analytical_storage_enabled            = var.analytical_storage_enabled
-  automatic_failover_enabled            = var.automatic_failover_enabled
+  automatic_failover_enabled            = true
   partition_merge_enabled               = var.partition_merge_enabled
   public_network_access_enabled         = var.public_network_access_enabled
   is_virtual_network_filter_enabled     = var.is_virtual_network_filter_enabled

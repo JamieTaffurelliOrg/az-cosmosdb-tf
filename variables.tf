@@ -43,12 +43,6 @@ variable "analytical_storage_enabled" {
   description = "Enable analytical storage"
 }
 
-variable "automatic_failover_enabled" {
-  type        = bool
-  default     = true
-  description = "Enable auto failover"
-}
-
 variable "partition_merge_enabled" {
   type        = bool
   default     = false
