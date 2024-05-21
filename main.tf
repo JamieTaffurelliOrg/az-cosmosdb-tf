@@ -4,7 +4,7 @@ resource "azurerm_cosmosdb_account" "cosmosdb_account" {
   resource_group_name                   = var.resource_group_name
   minimal_tls_version                   = "Tls12"
   offer_type                            = "Standard"
-  default_identity_type                 = "SystemAssignedIdentity"
+  default_identity_type                 = var.default_identity_type
   create_mode                           = var.create_mode
   kind                                  = var.kind
   ip_range_filter                       = var.ip_range_filter
@@ -32,24 +32,24 @@ resource "azurerm_cosmosdb_account" "cosmosdb_account" {
     for_each = { for k in var.geo_locations : k.location => k if k != null }
 
     content {
-      location          = geo_location.location
-      failover_priority = geo_location.failover_priority
-      zone_redundant    = geo_location.zone_redundant
+      location          = geo_location.value["location"]
+      failover_priority = geo_location.value["failover_priority"]
+      zone_redundant    = geo_location.value["zone_redundant"]
     }
   }
 
   dynamic "capabilities" {
     for_each = toset(var.capabilities)
     content {
-      name = each.key
+      name = capabilities.key
     }
   }
 
   dynamic "virtual_network_rule" {
-    for_each = var.virtual_network_rules
+    for_each = var.virtual_network_rules == null ? {} : var.virtual_network_rules
     content {
-      id                                   = virtual_network_rule.id
-      ignore_missing_vnet_service_endpoint = virtual_network_rule.ignore_missing_vnet_service_endpoint
+      id                                   = virtual_network_rule.value["id"]
+      ignore_missing_vnet_service_endpoint = virtual_network_rule.value["ignore_missing_vnet_service_endpoint"]
     }
 
   }
@@ -91,18 +91,18 @@ resource "azurerm_cosmosdb_account" "cosmosdb_account" {
   }
 
   dynamic "restore" {
-    for_each = var.create_mode == "Restore" ? [] : [1]
+    for_each = var.create_mode == "Restore" ? { "restore" = var.restore } : {}
 
     content {
-      source_cosmosdb_account_id = var.restore.source_cosmosdb_account_id
-      restore_timestamp_in_utc   = var.restore.restore_timestamp_in_utc
+      source_cosmosdb_account_id = restore.value["source_cosmosdb_account_id"]
+      restore_timestamp_in_utc   = restore.value["restore_timestamp_in_utc"]
 
       dynamic "database" {
         for_each = var.restore.database == null ? {} : { "database" = var.restore.database }
 
         content {
-          name             = var.restore.database.name
-          collection_names = var.restore.database.collection_names
+          name             = database.value["name"]
+          collection_names = database.value["collection_names"]
         }
       }
 
@@ -110,11 +110,11 @@ resource "azurerm_cosmosdb_account" "cosmosdb_account" {
         for_each = var.restore.gremlin_database == null ? {} : { "database" = var.restore.gremlin_database }
 
         content {
-          name        = var.restore.gremlin_database.name
-          graph_names = var.restore.gremlin_database.graph_names
+          name        = gremlin_database.value["name"]
+          graph_names = gremlin_database.value["graph_names"]
         }
       }
-      tables_to_restore = var.restore.tables_to_restore
+      tables_to_restore = restore.value["restore.tables_to_restore"]
     }
   }
 
@@ -193,7 +193,7 @@ resource "azurerm_cosmosdb_sql_database" "cosmosdb_sql_db" {
   name                = each.value["name"]
   resource_group_name = var.resource_group_name
   account_name        = azurerm_cosmosdb_account.cosmosdb_account.name
-  throughput          = 400
+  throughput          = each.value["throughput"]
 
   dynamic "autoscale_settings" {
     for_each = each.value["autoscale_settings"] == null ? {} : { "autoscale_settings" = each.value["autoscale_settings"] }
