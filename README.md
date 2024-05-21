@@ -35,7 +35,7 @@ No modules.
 | <a name="input_access_key_metadata_writes_enabled"></a> [access\_key\_metadata\_writes\_enabled](#input\_access\_key\_metadata\_writes\_enabled) | Allow writes to metadata resources using access keys | `bool` | `false` | no |
 | <a name="input_analytical_storage_enabled"></a> [analytical\_storage\_enabled](#input\_analytical\_storage\_enabled) | Enable analytical storage | `bool` | `true` | no |
 | <a name="input_analytical_storage_schema_type"></a> [analytical\_storage\_schema\_type](#input\_analytical\_storage\_schema\_type) | Type of analytical storage | `string` | `"FullFidelity"` | no |
-| <a name="input_backup"></a> [backup](#input\_backup) | BAckup Properties | <pre>object(<br>    {<br>      type                = string<br>      tier                = optional(string)<br>      interval_in_minutes = optional(number)<br>      retention_in_hours  = optional(number)<br>      storage_redundancy  = string<br>    }<br>  )</pre> | n/a | yes |
+| <a name="input_backup"></a> [backup](#input\_backup) | Backup Properties | <pre>object(<br>    {<br>      type                = string<br>      tier                = optional(string)<br>      interval_in_minutes = optional(number)<br>      retention_in_hours  = optional(number)<br>      storage_redundancy  = string<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_capabilities"></a> [capabilities](#input\_capabilities) | Capablilites of the Cosmos DB | `list(string)` | n/a | yes |
 | <a name="input_consistency_policy"></a> [consistency\_policy](#input\_consistency\_policy) | Replication consistency | <pre>object(<br>    {<br>      consistency_level       = optional(string, "Session")<br>      max_interval_in_seconds = optional(number)<br>      max_staleness_prefix    = optional(number)<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_cors_rule"></a> [cors\_rule](#input\_cors\_rule) | CORS properties | <pre>object(<br>    {<br>      allowed_headers    = list(string)<br>      allowed_methods    = list(string)<br>      allowed_origins    = list(string)<br>      exposed_headers    = list(string)<br>      max_age_in_seconds = number<br>    }<br>  )</pre> | `null` | no |
@@ -63,7 +63,7 @@ No modules.
 | <a name="input_sql_databases"></a> [sql\_databases](#input\_sql\_databases) | Cosmos Db SQL databases | <pre>list(object({<br>    name       = string<br>    throughput = optional(number)<br>    autoscale_settings = optional(object({<br>      max_throughput = number<br>    }))<br>  }))</pre> | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply | `map(string)` | n/a | yes |
 | <a name="input_total_throughput_limit"></a> [total\_throughput\_limit](#input\_total\_throughput\_limit) | Max RU throughput | `number` | n/a | yes |
-| <a name="input_virtual_network_rules"></a> [virtual\_network\_rules](#input\_virtual\_network\_rules) | Virtual network rules | <pre>map(object(<br>    {<br>      id                                   = string<br>      ignore_missing_vnet_service_endpoint = optional(bool, false)<br>    }<br>  ))</pre> | n/a | yes |
+| <a name="input_virtual_network_rules"></a> [virtual\_network\_rules](#input\_virtual\_network\_rules) | Virtual network rules | <pre>map(object(<br>    {<br>      id                                   = string<br>      ignore_missing_vnet_service_endpoint = optional(bool, false)<br>    }<br>  ))</pre> | `null` | no |
 
 ## Outputs
 
