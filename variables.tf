@@ -136,6 +136,7 @@ variable "virtual_network_rules" {
       ignore_missing_vnet_service_endpoint = optional(bool, false)
     }
   ))
+  default     = null
   description = "Virtual network rules"
 }
 
@@ -160,7 +161,7 @@ variable "backup" {
       storage_redundancy  = string
     }
   )
-  description = "BAckup Properties"
+  description = "Backup Properties"
 }
 
 variable "cors_rule" {
