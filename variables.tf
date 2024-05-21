@@ -13,6 +13,12 @@ variable "cosmosdb_account_name" {
   description = "Cosmos DB account name"
 }
 
+variable "default_identity_type" {
+  type        = string
+  default     = "FirstPartyIdentity"
+  description = "Identity to use for CMK"
+}
+
 variable "create_mode" {
   type        = string
   default     = "Default"
@@ -158,7 +164,7 @@ variable "backup" {
       tier                = optional(string)
       interval_in_minutes = optional(number)
       retention_in_hours  = optional(number)
-      storage_redundancy  = string
+      storage_redundancy  = optional(string)
     }
   )
   description = "Backup Properties"
